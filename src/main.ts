@@ -6,23 +6,23 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
-	app.enableCors({origin: '*'});
+	app.enableCors({ origin: '*' });
 
 	app.useGlobalPipes(
 		new ValidationPipe({
 			transform: true,
 			whitelist: true,
 			forbidNonWhitelisted: true,
-		})
+		}),
 	);
 
 	useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
 	const config = new DocumentBuilder()
-		.setTitle('OwlPartners')
-		.setDescription('OwlPartners Service')
-		.setVersion('1.0')
-		.addTag('owlPartners')
+		.setTitle('LGPD - Segurança da informação')
+		.setDescription('LGPD Service')
+		.setVersion('0.0')
+		.addTag('lgpd')
 		.build();
 	const document = SwaggerModule.createDocument(app, config);
 	SwaggerModule.setup('api', app, document);

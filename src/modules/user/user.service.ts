@@ -1,8 +1,7 @@
-
 import * as bcrypt from 'bcrypt';
 
-import { Injectable, NotFoundException } from "@nestjs/common";
-import { PrismaService } from "src/database/prisma/prisma.service";
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from 'src/database/prisma/prisma.service';
 import { CreateUserDTO } from './dto/createUser.dto';
 import { UpdateUserDTO } from './dto/updateUser.dto';
 
@@ -10,7 +9,7 @@ const saltOrRounds = 10;
 
 @Injectable()
 export class UserService {
-	constructor(private readonly prismaService: PrismaService) { }
+	constructor(private readonly prismaService: PrismaService) {}
 
 	findAll() {
 		return this.prismaService.user.findMany();
@@ -19,12 +18,12 @@ export class UserService {
 	async findById(id: string) {
 		const user = await this.prismaService.user.findUnique({
 			where: {
-				id
-			}
+				id,
+			},
 		});
 
 		if (user === null) throw new NotFoundException('Usuário não encontrado');
-		return user
+		return user;
 	}
 
 	async findByName(name: string) {
@@ -34,9 +33,6 @@ export class UserService {
 					{
 						name: { contains: name, mode: 'insensitive' },
 					},
-					{
-						lastName: { contains: name, mode: 'insensitive' }
-					}
 				],
 			},
 			orderBy: {
@@ -67,7 +63,7 @@ export class UserService {
 			},
 		});
 
-		return userUpdated
+		return userUpdated;
 	}
 
 	delete(id: string) {
@@ -89,5 +85,4 @@ export class UserService {
 		if (!userFound) throw new NotFoundException('Usuário não encontrado');
 		return userFound;
 	}
-
 }
