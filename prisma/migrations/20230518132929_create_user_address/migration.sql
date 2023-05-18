@@ -15,10 +15,10 @@ CREATE TABLE "address" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "street" TEXT,
-    "neighborhood" TEXT NOT NULL,
-    "state" TEXT NOT NULL,
-    "city" TEXT NOT NULL,
-    "country" TEXT NOT NULL,
+    "neighborhood" TEXT,
+    "state" TEXT,
+    "city" TEXT,
+    "country" TEXT,
 
     CONSTRAINT "address_pkey" PRIMARY KEY ("id")
 );
@@ -31,12 +31,6 @@ CREATE UNIQUE INDEX "users_cpf_key" ON "users"("cpf");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "address_userId_key" ON "address"("userId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "address_neighborhood_key" ON "address"("neighborhood");
-
--- CreateIndex
-CREATE UNIQUE INDEX "address_city_key" ON "address"("city");
 
 -- AddForeignKey
 ALTER TABLE "address" ADD CONSTRAINT "address_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
