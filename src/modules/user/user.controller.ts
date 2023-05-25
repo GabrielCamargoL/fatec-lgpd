@@ -1,11 +1,11 @@
-import { Body, Controller, Delete, Get, Inject, NotFoundException, Param, Post, Put, Query, UseGuards, forwardRef } from "@nestjs/common";
+import { Request,Body, Controller, Delete, Get, Inject, NotFoundException, Param, Post, Put, Query, UseGuards, forwardRef } from "@nestjs/common";
 import { CreateUserDTO } from "./dto/createUser.dto";
 import { UserService } from "./user.service";
 import { AuthGuard } from "@nestjs/passport";
 import { ApiTags } from "@nestjs/swagger";
 import { UpdateUserDTO } from "./dto/updateUser.dto";
 import { AuthService } from "../auth/auth.service";
-import { User } from "@prisma/client";
+import { Prisma, User } from "@prisma/client";
 
 @Controller('/users')
 @ApiTags('users')
@@ -19,13 +19,17 @@ export class UserController {
 
 	@Post()
 	async CreateUser(@Body() userData: CreateUserDTO) {
-		const createdUser = await this.userService.create(userData);
+		const createdUser: Partial<Prisma.UserWhereInput> = await this.userService.create(userData);
 
 		const user = { email: userData.email, password: userData.password }
 		const userLogged = await this.authService.login(user);
 
+		delete createdUser.cpf;
+		delete createdUser.password;
+		delete createdUser.phoneNumber;
+
 		return {
-			user: createdUser as Omit<User, "password">,
+			user: createdUser,
 			token: userLogged.token
 		}
 	}
@@ -47,8 +51,14 @@ export class UserController {
 
 	@Get('/:id')
 	@UseGuards(AuthGuard('jwt'))
-	async show(@Param('id') id: string,) {
+	async show(@Request() req,@Param('id') id: string,) {
 		const user = await this.userService.findById(id);
+		if (user.id !== req.user.id) {
+			delete user.cpf;
+			delete user.password;
+			delete user.phoneNumber;
+		}
+
 		return user;
 	}
 

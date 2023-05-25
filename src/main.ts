@@ -19,7 +19,7 @@ async function bootstrap() {
 	useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
 	const config = new DocumentBuilder()
-		.setTitle('LGPD - Segurança da informação')
+		.setTitle('Segurança no Desenvolvimento de Aplicações -LGPD')
 		.setDescription('LGPD Service')
 		.setVersion('0.0')
 		.addTag('lgpd')

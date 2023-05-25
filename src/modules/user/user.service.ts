@@ -4,6 +4,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma/prisma.service';
 import { CreateUserDTO } from './dto/createUser.dto';
 import { UpdateUserDTO } from './dto/updateUser.dto';
+import { request } from 'express';
+import { Prisma } from '@prisma/client';
 
 const saltOrRounds = 10;
 
@@ -16,13 +18,13 @@ export class UserService {
 	}
 
 	async findById(id: string) {
-		const user = await this.prismaService.user.findUnique({
+		const user: Partial<Prisma.UserWhereInput> = await this.prismaService.user.findUniqueOrThrow({
 			where: {
 				id,
 			},
 		});
-
 		if (user === null) throw new NotFoundException('Usuário não encontrado');
+
 		return user;
 	}
 

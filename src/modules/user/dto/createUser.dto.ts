@@ -1,9 +1,9 @@
-import { IsEmail, IsNotEmpty, MinLength } from "class-validator";
+import { IsEmail, IsNotEmpty, IsOptional, MinLength } from "class-validator";
 import { EmailIsUnique } from "../validation/email-is-unique.validator";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateUserDTO {
-	@IsNotEmpty({ message: 'O nome (name) não pode ser vazio.' })
+	@IsNotEmpty({ message: 'O nome não pode ser vazio.' })
 	@ApiProperty()
 	name: string;
 
@@ -16,9 +16,11 @@ export class CreateUserDTO {
 	@ApiProperty()
 	password: string;
 
+	@IsNotEmpty({ message: 'O cpf não pode ser vazio.' })
 	@ApiProperty()
 	cpf: string;
 
+	@IsOptional()
 	@ApiProperty()
 	phoneNumber: string;
 }
