@@ -19,6 +19,7 @@ model User {
   phoneNumber String
 
   address Address?
+  key     Key?
 
   @@map("users")
 }
@@ -36,4 +37,14 @@ model Address {
   country      String?
 
   @@map("address")
+}
+
+model Key {
+  id     String @id @default(uuid())
+  secret String @unique
+
+  User   User   @relation(fields: [userId], references: [id])
+  userId String @unique
+
+  @@map("keys")
 }
