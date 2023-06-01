@@ -20,8 +20,8 @@
 		"test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
 		"test:e2e": "jest --config ./test/jest-e2e.json",
 		"seed": "ts-node src/database/seeds/user.seed.ts",
-		"mongo:generate": "npx prisma generate --schema prisma/keys.prisma",
-		"mongo:dbpush": "npx prisma db push --schema prisma/keys.prisma"
+		"mongo:generate": "npx prisma generate --schema prisma/schema.mongo.prisma",
+		"mongo:dbpush": "npx prisma db push --schema prisma/schema.mongo.prisma"
 	},
 	"dependencies": {
 		"@nestjs/common": "^9.0.0",

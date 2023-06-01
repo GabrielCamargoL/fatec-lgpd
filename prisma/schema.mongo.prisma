@@ -12,9 +12,9 @@ datasource db {
   url      = env("DATABASE_KEYS_URL")
 }
 
-model Key {
+model DeletedUsers {
   id     String @id @default(auto()) @map("_id") @db.ObjectId
-  secret String @unique
+  userId String @unique
 
-  @@map("keys")
+  @@map("deleted-users")
 }
