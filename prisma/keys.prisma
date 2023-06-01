@@ -2,16 +2,18 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["mongodb", "filterJson"]
+  output          = "../node_modules/@prisma-mongo/prisma/client"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_KEYS_URL")
 }
 
 model Key {
-  id     String @id @default(uuid())
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
   secret String @unique
 
   @@map("keys")

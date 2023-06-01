@@ -17,20 +17,15 @@ services:
       - postgres
     restart: unless-stopped
 
-  postgres-keys:
-    image: postgres
+  mongo:
+    image: mongo
+    restart: always
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      POSTGRES_DB: lgpd-keys
-      PGDATA: /data/postgres
-    volumes:
-      - postgres:/data/postgres
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USER:-root}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD:-root}
+      MONGO_INITDB_DATABASE: ${MONGODB_NAME:-lgpdKeys}
     ports:
-      - "5001:5432"
-    networks:
-      - postgres
-    restart: unless-stopped
+      - 27017:27017
 
 networks:
   postgres:
