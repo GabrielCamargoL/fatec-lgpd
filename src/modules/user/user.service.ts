@@ -69,23 +69,17 @@ export class UserService {
 	}
 
 	delete(id: string) {
-		return this.prismaMongoService.deletedUsers.create({
+		this.prismaMongoService.deletedUsers.create({
 			data: {
 				userId: id,
 			},
 		});
 
-		// this.prismaService.address.delete({
-		// 	where: {
-		// 		userId: id,
-		// 	},
-		// });
-
-		// return this.prismaService.user.delete({
-		// 	where: {
-		// 		id: id,
-		// 	},
-		// });
+		return this.prismaService.user.delete({
+			where: {
+				id: id,
+			},
+		});
 	}
 
 	userExists(email: string): boolean {

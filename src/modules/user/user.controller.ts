@@ -1,27 +1,40 @@
-import { Request,Body, Controller, Delete, Get, Inject, NotFoundException, Param, Post, Put, Query, UseGuards, forwardRef } from "@nestjs/common";
-import { CreateUserDTO } from "./dto/createUser.dto";
-import { UserService } from "./user.service";
-import { AuthGuard } from "@nestjs/passport";
-import { ApiTags } from "@nestjs/swagger";
-import { UpdateUserDTO } from "./dto/updateUser.dto";
-import { AuthService } from "../auth/auth.service";
-import { Prisma, User } from "@prisma/client";
+import {
+	Request,
+	Body,
+	Controller,
+	Delete,
+	Get,
+	Inject,
+	NotFoundException,
+	Param,
+	Post,
+	Put,
+	Query,
+	UseGuards,
+	forwardRef,
+} from '@nestjs/common';
+import { CreateUserDTO } from './dto/createUser.dto';
+import { UserService } from './user.service';
+import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
+import { UpdateUserDTO } from './dto/updateUser.dto';
+import { AuthService } from '../auth/auth.service';
+import { Prisma, User } from '@prisma/client';
 
 @Controller('/users')
 @ApiTags('users')
 export class UserController {
-
 	constructor(
 		private userService: UserService,
 		@Inject(forwardRef(() => AuthService))
-		private authService: AuthService
-	) { }
+		private authService: AuthService,
+	) {}
 
 	@Post()
 	async CreateUser(@Body() userData: CreateUserDTO) {
 		const createdUser: Partial<Prisma.UserWhereInput> = await this.userService.create(userData);
 
-		const user = { email: userData.email, password: userData.password }
+		const user = { email: userData.email, password: userData.password };
 		const userLogged = await this.authService.login(user);
 
 		delete createdUser.cpf;
@@ -30,8 +43,8 @@ export class UserController {
 
 		return {
 			user: createdUser,
-			token: userLogged.token
-		}
+			token: userLogged.token,
+		};
 	}
 
 	@Get()
@@ -47,11 +60,11 @@ export class UserController {
 		if (name === null || name === undefined) return this.userService.findAll();
 
 		return this.userService.findByName(name);
-	};
+	}
 
 	@Get('/:id')
 	@UseGuards(AuthGuard('jwt'))
-	async show(@Request() req,@Param('id') id: string,) {
+	async show(@Request() req, @Param('id') id: string) {
 		const user = await this.userService.findById(id);
 		if (user.id !== req.user.id) {
 			delete user.cpf;
@@ -68,16 +81,17 @@ export class UserController {
 		const userUpdated = await this.userService.update(dataToUpdate, id);
 		return {
 			user: userUpdated,
-			message: 'Usuário Atualizado com sucesso.'
-		}
+			message: 'Usuário Atualizado com sucesso.',
+		};
 	}
 
 	@Delete('/:id')
 	@UseGuards(AuthGuard('jwt'))
 	async deleteUser(@Param('id') id: string) {
 		const userFound = await this.userService.findById(id);
-		if (userFound === null) throw new NotFoundException('Usuário não encontrado.')
+		if (userFound === null) throw new NotFoundException('Usuário não encontrado.');
 
-		return this.userService.delete(id);
+		this.userService.delete(id);
+		return { message: 'Usuário deletado com sucesso.' };
 	}
 }
