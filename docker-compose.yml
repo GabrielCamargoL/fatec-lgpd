@@ -17,6 +17,18 @@ services:
       - postgres
     restart: unless-stopped
 
+  mongo:
+    build: ./docker/mongodb
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USER:-root}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD:-root}
+      MONGO_INITDB_DATABASE: ${MONGODB_NAME:-lgpdKeys}
+      MONGO_REPLICA_HOST: localhost
+      MONGO_REPLICA_PORT: "27017"
+    ports:
+      - 27017:27017
+
 networks:
   postgres:
     driver: bridge

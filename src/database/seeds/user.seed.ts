@@ -3,7 +3,6 @@ import * as bcrypt from 'bcrypt';
 import { PrismaClient } from '@prisma/client';
 
 import { users } from './mocks/users';
-import { address } from './mocks/address';
 
 const prisma = new PrismaClient();
 
@@ -16,12 +15,7 @@ async function main() {
 		const hash = await bcrypt.hash(user.password, 10);
 		user.password = hash;
 
-		const newUser = await prisma.user.create({ data: users[userIndex] });
-
-		const newAddress = { userId: newUser.id, ...address[userIndex] };
-		newAddress.userId = newUser.id;
-
-		await prisma.address.create({ data: newAddress });
+		await prisma.user.create({ data: users[userIndex] });
 	}
 }
 
