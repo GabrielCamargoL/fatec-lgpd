@@ -68,16 +68,18 @@ export class UserService {
 		return userUpdated;
 	}
 
-	delete(id: string) {
-		this.prismaMongoService.deletedUsers.create({
-			data: {
-				userId: id,
-			},
-		});
-
-		return this.prismaService.user.delete({
+	async delete(id: string) {
+		await this.prismaService.user.delete({
 			where: {
 				id: id,
+			},
+		});
+	}
+
+	async insertIdOnDeletedUsersList(id: string) {
+		return await this.prismaMongoService.deletedUsers.create({
+			data: {
+				userId: id,
 			},
 		});
 	}
