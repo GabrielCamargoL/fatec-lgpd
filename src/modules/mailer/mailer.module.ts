@@ -11,8 +11,8 @@ import { MailService } from './mailer.service';
         secure: false, //regras de segurança do serviço smtp
         port: 587, // porta
         auth: { //dados do usuário e senha
-          user: 'postmaster@sandboxf996b20f32d54080a822c18cd841911d.mailgun.org',
-          pass: '798264ef20a23c0b41cbba5f412cbeae-5d9bd83c-9bb58cd6',
+          user: '<user>',
+          pass: '<senha>',
         },
         ignoreTLS: true,
       },

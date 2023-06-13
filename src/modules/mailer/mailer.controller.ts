@@ -9,11 +9,9 @@ export class MailerController {
 
   @Post('enviar-email')
   enviarEmail(@Request() req) {
-    console.log(req.body.email);
-    console.log(req.body.mensagem);
     return this.mailerService.enviarEmail(
       req.body.email,
-      req.body.mensagem,
+      req.body.message,
     );
   }
 }
