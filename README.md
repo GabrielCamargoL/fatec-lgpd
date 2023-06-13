@@ -35,3 +35,17 @@ $ yarn start
 O servidor inciará localmente na porta 3000. Use o Insomnia ou postman para simular requisições e respostas das rotas (pelo link [https://localhost:3000](https://localhost:3000))
 
 Caso queira usar o Insomnia para testar as rotas, use o arquivo Insomnia_2023_mm_dd.json para importar as requisições.
+
+<br>
+<br>
+<br>
+
+- Tutorial para sincronização
+
+```bash
+# Cria arquivo de backup do container para sua maquina e copia arquivo da sua maquina para o volume do container
+$ docker exec lgpd_postgres pg_dump --host localhost --port 5432 --username postgres --dbname lgpd  --inserts --on-conflict-do-nothing > bk.sql.dump && docker cp bk.sql.dump lgpd_postgres:/data/postgres
+
+# No diretório do volume no terminal docker
+$ psql -U postgres lgpd < bk.sql.dump
+```
