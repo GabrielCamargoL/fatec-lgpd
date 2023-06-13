@@ -6,6 +6,7 @@ import { ApiTags } from "@nestjs/swagger";
 import { UpdateUserDTO } from "./dto/updateUser.dto";
 import { AuthService } from "../auth/auth.service";
 import { Prisma, User } from "@prisma/client";
+import { MailerService } from "@nestjs-modules/mailer";
 
 @Controller('/users')
 @ApiTags('users')
@@ -14,7 +15,8 @@ export class UserController {
 	constructor(
 		private userService: UserService,
 		@Inject(forwardRef(() => AuthService))
-		private authService: AuthService
+		private authService: AuthService,
+		private mailerService: MailerService
 	) { }
 
 	@Post()
@@ -77,6 +79,14 @@ export class UserController {
 	async deleteUser(@Param('id') id: string) {
 		const userFound = await this.userService.findById(id);
 		if (userFound === null) throw new NotFoundException('Usuário não encontrado.')
+
+		await this.mailerService.sendMail({
+			to: userFound.email?.toString(),
+			from: 'joaom.fatec@gmail.com',
+			subject: "Hello",
+			html:'seu usuário esta sendo delatado'
+		});
+
 
 		return this.userService.delete(id);
 	}

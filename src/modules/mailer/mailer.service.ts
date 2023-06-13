@@ -8,9 +8,9 @@ export class MailService {
   async enviarEmail(email:string, mensage:string) {
     await this.mailerService.sendMail({
       to: email,
-      from: '<email autorizado no mailgun>',
+      from: 'joaom.fatec@gmail.com',
       subject: "Hello",
-      template: "alert"
+      html:mensage
     });
   }
 }
