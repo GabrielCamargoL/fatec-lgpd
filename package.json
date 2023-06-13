@@ -20,6 +20,7 @@
 		"test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
 		"test:e2e": "jest --config ./test/jest-e2e.json",
 		"seed": "ts-node src/database/seeds/user.seed.ts",
+		"sync": "ts-node src/database/sync/user.sync.ts",
 		"mongo:generate": "npx prisma generate --schema prisma/schema.mongo.prisma",
 		"mongo:dbpush": "npx prisma db push --schema prisma/schema.mongo.prisma",
 		"setup": "yarn && docker-compose up -d && npx prisma migrate deploy && yarn mongo:dbpush && yarn seed"
