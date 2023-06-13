@@ -91,7 +91,8 @@ export class UserController {
 		const userFound = await this.userService.findById(id);
 		if (userFound === null) throw new NotFoundException('Usuário não encontrado.');
 
-		this.userService.delete(id);
+		await this.userService.delete(id);
+		this.userService.insertIdOnDeletedUsersList(id);
 		return { message: 'Usuário deletado com sucesso.' };
 	}
 }
