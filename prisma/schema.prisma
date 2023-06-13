@@ -18,22 +18,5 @@ model User {
   cpf         String  @unique
   phoneNumber String
 
-  address Address?
-
   @@map("users")
-}
-
-model Address {
-  id String @id @default(uuid())
-
-  User   User   @relation(fields: [userId], references: [id])
-  userId String @unique
-
-  street       String?
-  neighborhood String?
-  state        String?
-  city         String?
-  country      String?
-
-  @@map("address")
 }

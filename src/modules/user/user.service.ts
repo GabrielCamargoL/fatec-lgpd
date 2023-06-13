@@ -4,14 +4,14 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma/prisma.service';
 import { CreateUserDTO } from './dto/createUser.dto';
 import { UpdateUserDTO } from './dto/updateUser.dto';
-import { request } from 'express';
 import { Prisma } from '@prisma/client';
+import { PrismaServiceMongo } from 'src/database/prisma/mongo/prisma.mongo.service';
 
 const saltOrRounds = 10;
 
 @Injectable()
 export class UserService {
-	constructor(private readonly prismaService: PrismaService) {}
+	constructor(private readonly prismaService: PrismaService, readonly prismaMongoService: PrismaServiceMongo) {}
 
 	findAll() {
 		return this.prismaService.user.findMany();
@@ -69,6 +69,12 @@ export class UserService {
 	}
 
 	delete(id: string) {
+		this.prismaMongoService.deletedUsers.create({
+			data: {
+				userId: id,
+			},
+		});
+
 		return this.prismaService.user.delete({
 			where: {
 				id: id,
