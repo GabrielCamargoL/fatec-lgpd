@@ -6,12 +6,13 @@ import { CreateUserDTO } from './dto/createUser.dto';
 import { UpdateUserDTO } from './dto/updateUser.dto';
 import { Prisma } from '@prisma/client';
 import { PrismaServiceMongo } from 'src/database/prisma/mongo/prisma.mongo.service';
+import { MailService } from '../mailer/mailer.service';
 
 const saltOrRounds = 10;
 
 @Injectable()
 export class UserService {
-	constructor(private readonly prismaService: PrismaService, readonly prismaMongoService: PrismaServiceMongo) {}
+	constructor(private readonly prismaService: PrismaService, readonly prismaMongoService: PrismaServiceMongo, private readonly mailerService: MailService) {}
 
 	findAll() {
 		return this.prismaService.user.findMany();
@@ -74,6 +75,11 @@ export class UserService {
 				id: id,
 			},
 		});
+
+		await this.mailerService.enviarEmail
+
+
+		 
 	}
 
 	async insertIdOnDeletedUsersList(id: string) {
