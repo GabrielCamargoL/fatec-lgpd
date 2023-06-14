@@ -29,7 +29,6 @@ export class UserController {
 		private userService: UserService,
 		@Inject(forwardRef(() => AuthService))
 		private authService: AuthService,
-		private mailerService: MailerService
 	) { }
 
 	@Post()

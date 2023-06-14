@@ -9,8 +9,6 @@ export class MailService {
 		await this.mailerService.sendMail({
 			to: email,
 			from: 'joaom.fatec@gmail.com',
-
-			//tamplate do email
 			html: `<head>
 			<meta name="viewport" content="width=device-width" />
 			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
