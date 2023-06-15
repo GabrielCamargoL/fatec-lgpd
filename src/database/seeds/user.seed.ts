@@ -15,7 +15,7 @@ async function main() {
 		const hash = await bcrypt.hash(user.password, 10);
 		user.password = hash;
 
-		await prisma.user.create({ data: users[userIndex] });
+		await prisma.user.create({ data: user });
 	}
 }
 
