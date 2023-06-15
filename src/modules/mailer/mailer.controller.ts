@@ -7,7 +7,7 @@ import { ApiTags } from '@nestjs/swagger';
 export class MailerController {
   constructor(private readonly mailerService: MailService) {}
 
-  @Post('enviar-email')
+  @Post('send-email')
   enviarEmail(@Request() req) {
     return this.mailerService.enviarEmail(
       req.body.email,
