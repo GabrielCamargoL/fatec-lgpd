@@ -11,36 +11,25 @@ const saltOrRounds = 10;
 
 @Injectable()
 export class UserService {
-	constructor(private readonly prismaService: PrismaService, readonly prismaMongoService: PrismaServiceMongo) {}
+	constructor(private readonly prismaService: PrismaService, readonly prismaMongoService: PrismaServiceMongo) { }
 
 	findAll() {
 		return this.prismaService.user.findMany();
 	}
 
 	async findById(id: string) {
-		const user: Partial<Prisma.UserWhereInput> = await this.prismaService.user.findUniqueOrThrow({
-			where: {
-				id,
-			},
-		});
-		if (user === null) throw new NotFoundException('Usuário não encontrado');
+		try {
+			const user: Partial<Prisma.UserWhereInput> = await this.prismaService.user.findUniqueOrThrow({
+				where: {
+					id,
+				},
+			});
 
-		return user;
-	}
+			return user;
 
-	async findByName(name: string) {
-		return await this.prismaService.user.findMany({
-			where: {
-				OR: [
-					{
-						name: { contains: name, mode: 'insensitive' },
-					},
-				],
-			},
-			orderBy: {
-				name: 'asc',
-			},
-		});
+		} catch (error) {
+			throw new NotFoundException('Usuário não encontrado');
+		}
 	}
 
 	async create(user: CreateUserDTO) {

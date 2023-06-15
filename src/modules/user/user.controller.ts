@@ -28,7 +28,7 @@ export class UserController {
 		private userService: UserService,
 		@Inject(forwardRef(() => AuthService))
 		private authService: AuthService,
-	) {}
+	) { }
 
 	@Post()
 	async CreateUser(@Body() userData: CreateUserDTO) {
@@ -54,14 +54,6 @@ export class UserController {
 		return users;
 	}
 
-	@Get('/search')
-	@UseGuards(AuthGuard('jwt'))
-	async usersByName(@Query('name') name: string) {
-		if (name === null || name === undefined) return this.userService.findAll();
-
-		return this.userService.findByName(name);
-	}
-
 	@Get('/:id')
 	@UseGuards(AuthGuard('jwt'))
 	async show(@Request() req, @Param('id') id: string) {
@@ -72,6 +64,7 @@ export class UserController {
 			delete user.phoneNumber;
 		}
 
+		if (!user) throw new NotFoundException('Usuário não encontrado');
 		return user;
 	}
 

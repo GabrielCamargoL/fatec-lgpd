@@ -18,5 +18,32 @@ model User {
   cpf         String  @unique
   phoneNumber String
 
+  Purchases Purchase[]
+
   @@map("users")
+}
+
+model Product {
+  id Int @id @default(autoincrement())
+
+  purchase   Purchase? @relation(fields: [purchaseId], references: [id])
+  purchaseId Int
+
+  name        String
+  description String
+  price       Float
+  quantity    Int
+  category    String
+}
+
+model Purchase {
+  id     Int    @id @default(autoincrement())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  products Product[]
+
+  totalAmount Float
+  status      String
+  createdAt   DateTime @default(now())
 }

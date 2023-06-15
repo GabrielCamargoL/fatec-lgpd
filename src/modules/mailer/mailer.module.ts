@@ -7,7 +7,7 @@ import { MailService } from './mailer.service';
 	imports: [
 		MailerModule.forRoot({
 			transport: {
-				host: 'smtp.mailgun.org', //host smtp
+				host: process.env.HOST_SMTP, //host smtp
 				secure: false, //regras de segurança do serviço smtp
 				port: 587, // porta
 				auth: { //dados do usuário e senha
