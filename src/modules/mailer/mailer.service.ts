@@ -9,6 +9,7 @@ export class MailService {
 		await this.mailerService.sendMail({
 			to: email,
 			from: 'joaom.fatec@gmail.com',
+			subject:'Aviso de violação',
 			html: `<head>
 			<meta name="viewport" content="width=device-width" />
 			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
