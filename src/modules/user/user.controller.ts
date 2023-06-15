@@ -1,3 +1,4 @@
+import { MailerService } from "@nestjs-modules/mailer";
 import {
 	Request,
 	Body,
@@ -28,7 +29,7 @@ export class UserController {
 		private userService: UserService,
 		@Inject(forwardRef(() => AuthService))
 		private authService: AuthService,
-	) {}
+	) { }
 
 	@Post()
 	async CreateUser(@Body() userData: CreateUserDTO) {
